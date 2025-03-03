@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { waitUntil } from "@vercel/functions";
 
 export async function middleware(request) {
   if (request.nextUrl.pathname === "/middleware-rewrite") {
@@ -48,6 +49,21 @@ export async function middleware(request) {
     url.searchParams.set('region', region)
   
     return NextResponse.rewrite(url);
+  }
+    if (request.nextUrl.pathname === "/") {
+    waitUntil(new Promise(resolve => setTimeout(() => {
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+      async function example() {
+        console.log('Start');
+        await sleep(500); // Wait for 2 seconds
+        console.log('End');
+      }
+      example();
+      console.log("hello world")
+    }, 500)))
+    return NextResponse.next();
   }
 }
 
