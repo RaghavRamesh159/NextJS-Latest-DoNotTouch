@@ -30,7 +30,7 @@ export default async function App({ children }) {
     let i= 0;
     while(i<10000){
        // i += 1;
-      console.log("123");
+      // console.log("123");
     } // Wait for 3 seconds
     console.log("After call completed")
   })
