@@ -1,17 +1,22 @@
 import "../styles/global.css";
 import "../styles/layout.css";
 
-export async function generateStaticParams() { 
-  return []
-}
-export const revalidate = 1
+
+export const revalidate = 10
 export const dynamicParams = true
 
 export default function App({ children }) {
+  const data = await fetch('failthisreq')
+  const posts = await data.json()
+
   return (
     <html>
       <body>
-        {children}
+        <ul>
+          {posts.map((post) => (
+            <li key={post.id}>{post.title}</li>
+          ))}
+        </ul>
       </body>
     </html>
   );
