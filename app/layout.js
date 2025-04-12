@@ -3,10 +3,10 @@ import "../styles/layout.css";
 
 
 export const revalidate = 10
-export const dynamicParams = true
+export const dynamicParams = false
 
-export default function App({ children }) {
-  const data = await fetch('failthisreq')
+export default async function App({ children }) {
+  const data = await fetch('https://api.vercel.app/blog')
   const posts = await data.json()
 
   return (
