@@ -7,9 +7,6 @@ frontend:
         - ./patch-next.sh
     build:
       commands:
-        - env | grep -e NODE_ENV >> .env
-        - echo $NODE_ENV
-        - echo "NODE_ENV=production" >> .env
         - npm run build
   artifacts:
     baseDirectory: .next
