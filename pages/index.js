@@ -25,6 +25,8 @@ export default function Home({file}) {
         Hello
         <pre>
           {JSON.stringify(file, null, 2)}
+          <br/>
+          NODE_ENV = {process.env.NODE_ENV}
         </pre>
         {console.log(`SSR env : `)}
         {console.log(process.env.BUCKET)}
