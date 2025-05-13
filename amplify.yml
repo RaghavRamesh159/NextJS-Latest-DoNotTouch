@@ -3,12 +3,46 @@ frontend:
   phases:
     preBuild:
       commands:
+        - nvm use 20
         - npm install
-        - ./patch-next.sh
     build:
       commands:
+        - env | grep -e NODE_ENV >> .env
+        - echo $NODE_ENV
+        - echo "NODE_ENV=production" >> .env
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: dist
     files:
       - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+compute:
+  - name: default
+    runtime: nodejs20.x
+    src: compute/default
+    entrypoint: index.js
+    environment:
+      variables:
+        NODE_ENV: production
+permissions:
+  - type: managed-policy
+    document: arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess
+  - type: managed-policy
+    document: arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  - type: inline-policy
+    document:
+      Version: "2012-10-17"
+      Statement:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource: "arn:aws:ssm:*:*:parameter/*"
+        - Effect: Allow
+          Action:
+            - lambda:UpdateFunctionConfiguration
+            - lambda:InvokeFunction
+          Resource: "*"
